@@ -1,0 +1,127 @@
+### API de Gerenciamento de Pedidos - Exemplos de Requisições
+### Use com a extensão REST Client do VS Code
+
+@baseUrl = http://localhost:3000
+
+### ====== 1. CRIAR PEDIDO ======
+### Criar um novo pedido
+POST {{baseUrl}}/order
+Content-Type: application/json
+
+{
+  "numeroPedido": "v10089015vdb-01",
+  "valorTotal": 10000,
+  "dataCriacao": "2023-07-19T12:24:11.5299601+00:00",
+  "items": [
+    {
+      "idItem": "2434",
+      "quantidadeItem": 1,
+      "valorItem": 1000
+    },
+    {
+      "idItem": "2435",
+      "quantidadeItem": 2,
+      "valorItem": 4500
+    }
+  ]
+}
+
+### ====== 2. OBTER PEDIDO ======
+### Obter um pedido específico por número
+GET {{baseUrl}}/order/v10089015vdb-01
+
+### ====== 3. LISTAR PEDIDOS ======
+### Listar todos os pedidos (sem paginação)
+GET {{baseUrl}}/order/list
+
+### Listar com paginação e limite
+GET {{baseUrl}}/order/list?limit=10&skip=0&sort=-creationDate
+
+### Listar ordenado por número do pedido
+GET {{baseUrl}}/order/list?sort=orderId&limit=5
+
+### ====== 4. ATUALIZAR PEDIDO ======
+### Atualizar um pedido existente
+PUT {{baseUrl}}/order/v10089015vdb-01
+Content-Type: application/json
+
+{
+  "numeroPedido": "v10089015vdb-01",
+  "valorTotal": 15000,
+  "dataCriacao": "2023-07-19T12:24:11.5299601+00:00",
+  "items": [
+    {
+      "idItem": "2434",
+      "quantidadeItem": 2,
+      "valorItem": 1000
+    },
+    {
+      "idItem": "2435",
+      "quantidadeItem": 3,
+      "valorItem": 4333.33
+    }
+  ]
+}
+
+### ====== 5. DELETAR PEDIDO ======
+### Deletar um pedido
+DELETE {{baseUrl}}/order/v10089015vdb-01
+
+### ====== 6. HEALTH CHECK ======
+### Verificar se a API está rodando
+GET {{baseUrl}}/health
+
+### ====== TESTES ADICIONAIS ======
+### Criar segundo pedido
+POST {{baseUrl}}/order
+Content-Type: application/json
+
+{
+  "numeroPedido": "v10089016vdb-02",
+  "valorTotal": 5000,
+  "dataCriacao": "2023-07-20T10:30:00.000Z",
+  "items": [
+    {
+      "idItem": "3000",
+      "quantidadeItem": 5,
+      "valorItem": 1000
+    }
+  ]
+}
+
+### Criar terceiro pedido
+POST {{baseUrl}}/order
+Content-Type: application/json
+
+{
+  "numeroPedido": "v10089017vdb-03",
+  "valorTotal": 20000,
+  "dataCriacao": "2023-07-21T14:15:00.000Z",
+  "items": [
+    {
+      "idItem": "4000",
+      "quantidadeItem": 1,
+      "valorItem": 20000
+    }
+  ]
+}
+
+### Tentar obter pedido inexistente (deve retornar 404)
+GET {{baseUrl}}/order/nao-existe
+
+### Tentar criar pedido duplicado (deve retornar 409)
+POST {{baseUrl}}/order
+Content-Type: application/json
+
+{
+  "numeroPedido": "v10089015vdb-01",
+  "valorTotal": 10000,
+  "dataCriacao": "2023-07-19T12:24:11.5299601+00:00",
+  "items": [
+    {
+      "idItem": "2434",
+      "quantidadeItem": 1,
+      "valorItem": 1000
+    }
+  ]
+}
